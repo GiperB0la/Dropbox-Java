@@ -39,36 +39,53 @@ public class Client {
         this.port = port;
     }
 
-    public void start() throws IOException {
+    private void connect() throws IOException {
         selector = Selector.open();
 
         channel = SocketChannel.open();
         channel.configureBlocking(false);
         channel.connect(new InetSocketAddress(host, port));
         channel.register(selector, SelectionKey.OP_CONNECT);
+    }
 
-        System.out.println("[*] Connecting to server...");
-
+    public void start() {
         while (true) {
-            selector.select();
+            try {
+                connect();
 
-            Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
-            while (keys.hasNext()) {
-                SelectionKey key = keys.next();
-                keys.remove();
+                System.out.println("[*] Connecting to server...");
 
-                if (key.isConnectable()) {
-                    handleConnect(key);
+                while (channel.isOpen()) {
+                    selector.select();
+
+                    Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
+                    while (keys.hasNext()) {
+                        SelectionKey key = keys.next();
+                        keys.remove();
+
+                        if (key.isConnectable()) {
+                            handleConnect(key);
+                        }
+
+                        if (key.isWritable()) {
+                            handleWrite(key);
+                        }
+
+                        if (key.isReadable()) {
+                            handleRead(key);
+                        }
+                    }
                 }
 
-                if (key.isWritable()) {
-                    handleWrite(key);
-                }
-
-                if (key.isReadable()) {
-                    handleRead(key);
-                }
+            } catch (IOException e) {
+                System.out.println("[-] Connection error: " + e.getMessage());
             }
+
+            System.out.println("[*] Reconnecting in 2 seconds...");
+            try {
+                Thread.sleep(2000);
+            }
+            catch (InterruptedException ignored) {}
         }
     }
 

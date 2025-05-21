@@ -21,12 +21,7 @@ public class Controller {
             });
         });
         new Thread(() -> {
-            try {
-                client.start();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+            client.start();
         }).start();
         fileList.setOnDragOver(event -> {
             if (event.getGestureSource() != fileList && event.getDragboard().hasFiles()) {
