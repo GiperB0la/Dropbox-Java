@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="App.Controller"
+            prefWidth="600" prefHeight="400"
+            style="-fx-background-color: #1e1e1e;">
+
+    <top>
+        <VBox style="-fx-background-color: #252526;">
+            <Label text="📁 Server Files"
+                   style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #e0e0e0; -fx-padding: 15 0 10 20;" />
+        </VBox>
+    </top>
+
+    <center>
+        <ListView fx:id="fileList"
+                  style="
+                      -fx-background-color: #1e1e1e;
+                      -fx-control-inner-background: #1e1e1e;
+                      -fx-text-fill: #e0e0e0;
+                      -fx-border-color: #333;
+                  "
+                  VBox.vgrow="ALWAYS"/>
+    </center>
+
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 12 20 12 20;">
+            <Button text="Upload" onAction="#onUpload"
+                    style="-fx-background-color: #0078d7; -fx-text-fill: white; -fx-background-radius: 6;" />
+            <Button text="Download" onAction="#onDownload"
+                    style="-fx-background-color: #009688; -fx-text-fill: white; -fx-background-radius: 6;" />
+            <Button text="Delete" onAction="#onDelete"
+                    style="-fx-background-color: #e53935; -fx-text-fill: white; -fx-background-radius: 6;" />
+            <Button text="Refresh" onAction="#onRefresh"
+                    style="-fx-background-color: #43a047; -fx-text-fill: white; -fx-background-radius: 6;" />
+        </HBox>
+    </bottom>
+</BorderPane>
